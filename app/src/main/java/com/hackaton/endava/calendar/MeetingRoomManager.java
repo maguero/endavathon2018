@@ -1,5 +1,7 @@
 package com.hackaton.endava.calendar;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,18 +30,33 @@ public class MeetingRoomManager {
                             MeetingRoomsConstants.SeattleRoom.FILE_NAME));
         }
 
-        public static TextView buildCalendarTextView(View parent, String textValue) {
-            TextView calendarTextView = new TextView(parent.getContext());
+        public static TextView buildBusyCalendarTextView(View parent, String textValue) {
+            TextView busyCalendarTextView = new TextView(parent.getContext());
 
-            calendarTextView.setWidth(parent.getWidth());
-            calendarTextView.setHeight(40);
-            calendarTextView.setText(textValue);
-            calendarTextView.setTextSize(6);
+            busyCalendarTextView.setWidth(parent.getWidth());
+            busyCalendarTextView.setHeight(40);
+            busyCalendarTextView.setText(textValue);
+            busyCalendarTextView.setTextSize(6);
+            busyCalendarTextView.setBackgroundColor(Color.parseColor("#de411b"));
 
-            return calendarTextView;
+            return busyCalendarTextView;
         }
 
-        public static List<MeetingData> getFakeData() {
+        @SuppressLint("SetTextI18n")
+        public static TextView buildEmptyCalendarTextView(View parent) {
+            TextView emptyCalendarTextView = new TextView(parent.getContext());
+
+            emptyCalendarTextView.setWidth(parent.getWidth());
+            emptyCalendarTextView.setHeight(40);
+            emptyCalendarTextView.setTextSize(6);
+            emptyCalendarTextView.setBackgroundColor(Color.parseColor("#64666d"));
+            emptyCalendarTextView.setText("FREE");
+            emptyCalendarTextView.setTextColor(Color.parseColor("#ffffff"));
+
+            return emptyCalendarTextView;
+        }
+
+        public static List<MeetingData> getFakeData(boolean alternative) {
             List<MeetingData> fakeMeetingData = new ArrayList<>();
 
             fakeMeetingData.add(MeetingData.builder()
@@ -60,18 +77,19 @@ public class MeetingRoomManager {
                     .end("16:00")
                     .build());
 
-            fakeMeetingData.add(MeetingData.builder()
-                    .organizer("Juan Manuel Helguero")
-                    .start("16:00")
-                    .end("17:00")
-                    .build());
+            if (alternative) {
+                fakeMeetingData.add(MeetingData.builder()
+                        .organizer("Juan Manuel Helguero")
+                        .start("16:00")
+                        .end("17:00")
+                        .build());
 
-            fakeMeetingData.add(MeetingData.builder()
-                    .organizer("Valentin Plechuc")
-                    .start("17:00")
-                    .end("18:00")
-                    .build());
-
+                fakeMeetingData.add(MeetingData.builder()
+                        .organizer("Valentin Plechuc")
+                        .start("17:00")
+                        .end("18:00")
+                        .build());
+            }
             return fakeMeetingData;
         }
 

@@ -14,18 +14,21 @@ import com.hackaton.endava.calendar.model.MeetingData;
 import com.hackaton.endava.calendar.model.MeetingRoom;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AugmentedImageNode extends AnchorNode {
 
     private static final String TAG = "AugmentedImageNode";
+    private static final String START_DAY_AT = "09:00";
+    private static final String END_DAY_AT = "18:00";
 
     // The augmented image represented by this node.
     private AugmentedImage image;
 
     private static Map<String, CompletableFuture<ViewRenderable>> viewMap =
-            new HashMap<String, CompletableFuture<ViewRenderable>>();
+            new HashMap<>();
 
 
     public AugmentedImageNode(Context context) {
@@ -67,9 +70,29 @@ public class AugmentedImageNode extends AnchorNode {
             TextView tittle = layout.findViewById(R.id.tittle);
             tittle.setText(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getName());
 
-            for (MeetingData data : MeetingRoomManager.Manager.getFakeData()) {
-                layout.addView(MeetingRoomManager.Manager.buildCalendarTextView(layout, data.getStart() + " - " + data.getEnd() + "(" + data.getOrganizer() + ")"));
+            List<MeetingData> fakeMeetingData;
+
+            if (image.getName().equals(MeetingRoomsConstants.PortlandRoom.FILE_NAME)) {
+                fakeMeetingData = MeetingRoomManager.Manager.getFakeData(true);
+            } else {
+                fakeMeetingData = MeetingRoomManager.Manager.getFakeData(false);
             }
+
+            String startAt = START_DAY_AT;
+            for (MeetingData data : fakeMeetingData) {
+                if (startAt.equals(data.getStart())){
+                    layout.addView(MeetingRoomManager.Manager.buildBusyCalendarTextView(layout, data.getStart() + " - " + data.getEnd() + " (" + data.getOrganizer() + ")"));
+                } else {
+                    layout.addView(MeetingRoomManager.Manager.buildEmptyCalendarTextView(layout));
+                    layout.addView(MeetingRoomManager.Manager.buildBusyCalendarTextView(layout, data.getStart() + " - " + data.getEnd() + " (" + data.getOrganizer() + ")"));
+                }
+                startAt = data.getEnd();
+            }
+
+            if (!END_DAY_AT.equals(startAt)){
+                layout.addView(MeetingRoomManager.Manager.buildEmptyCalendarTextView(layout));
+            }
+
         }
 
         // Set the anchor based on the center of the image.

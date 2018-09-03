@@ -11,4 +11,5 @@ public class MeetingData {
     private String organizer;
     private String start;
     private String end;
+    private boolean busy;
 }
