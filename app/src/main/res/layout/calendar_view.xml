@@ -3,51 +3,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/holo_blue_light"
-    android:orientation="vertical"
-    android:padding="4dp"
     android:clipChildren="false"
-    android:clipToPadding="false" >
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:background="@android:color/black"
-        android:textColor="@android:color/white"
-        android:text="Room ***"/>
-
-    <TextView
-        android:id="@+id/am_8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="8 AM - Aguero Matias"
-        android:textSize="10sp"/>
-
-
-    <TextView
-        android:id="@+id/am_9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="10 AM - FREE"
-        android:paddingTop="2dp"
-        android:textSize="10sp"/>
-
-    <TextView
-        android:id="@+id/am_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="11 AM - FREE"
-        android:paddingTop="2dp"
-        android:textSize="10sp"/>
-
-    <TextView
-        android:id="@+id/am_11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="12 AM - Nicolas Bantar"
-        android:paddingTop="2dp"
-        android:textSize="10sp"/>
-
+        android:text="Room ***"
+        android:textAlignment="center"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

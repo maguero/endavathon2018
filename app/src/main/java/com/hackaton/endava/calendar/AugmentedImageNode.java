@@ -10,6 +10,7 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.hackaton.endava.calendar.model.MeetingData;
 import com.hackaton.endava.calendar.model.MeetingRoom;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class AugmentedImageNode extends AnchorNode {
     public AugmentedImageNode(Context context) {
         // Upon construction, start loading the models for the corners of the frame.
 
-        for (MeetingRoom room: MeetingRoomManager.Manager.meetingRooms.values()) {
+        for (MeetingRoom room : MeetingRoomManager.Manager.meetingRooms.values()) {
             if (viewMap.get(room.getFileName()) == null) {
                 viewMap.put(room.getFileName(), ViewRenderable.builder().setView(context, R.layout.calendar_view).build());
             }
@@ -64,6 +65,10 @@ public class AugmentedImageNode extends AnchorNode {
             LinearLayout layout = (LinearLayout) now.getView();
             TextView tittle = layout.findViewById(R.id.tittle);
             tittle.setText(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getName());
+
+            for (MeetingData data : MeetingRoomManager.Manager.getFakeData()) {
+                layout.addView(MeetingRoomManager.Manager.buildCalendarTextView(layout, data.getStart() + " - " + data.getEnd() + "(" + data.getOrganizer() + ")"));
+            }
         }
 
         // Set the anchor based on the center of the image.
@@ -71,7 +76,7 @@ public class AugmentedImageNode extends AnchorNode {
 
         // Make the 4 corner nodes.
         Vector3 localPosition = new Vector3();
-        localPosition.set(0.0f , 0.0f, 0.0f);
+        localPosition.set(0.0f, 0.0f, 0.0f);
 
         Node viewNode = new Node();
         viewNode.setParent(this);
