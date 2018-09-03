@@ -63,6 +63,7 @@ public class AugmentedImageNode extends AnchorNode {
         ViewRenderable now = calendarView.getNow(null);
         if (now != null) {
             LinearLayout layout = (LinearLayout) now.getView();
+            layout.setMinimumWidth(40);
             TextView tittle = layout.findViewById(R.id.tittle);
             tittle.setText(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getName());
 

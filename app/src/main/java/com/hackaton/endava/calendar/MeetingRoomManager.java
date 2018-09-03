@@ -34,7 +34,7 @@ public class MeetingRoomManager {
             calendarTextView.setWidth(parent.getWidth());
             calendarTextView.setHeight(40);
             calendarTextView.setText(textValue);
-            calendarTextView.setTextSize(8);
+            calendarTextView.setTextSize(6);
 
             return calendarTextView;
         }
