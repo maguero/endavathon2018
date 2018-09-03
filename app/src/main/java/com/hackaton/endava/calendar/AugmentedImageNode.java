@@ -25,7 +25,6 @@ public class AugmentedImageNode extends AnchorNode {
 
     private static Map<String, CompletableFuture<ViewRenderable>> viewMap =
             new HashMap<String, CompletableFuture<ViewRenderable>>();
-    //private static CompletableFuture<ViewRenderable> calendarView;
 
 
     public AugmentedImageNode(Context context) {
