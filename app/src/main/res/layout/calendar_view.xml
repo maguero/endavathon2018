@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/calendar_view"
-    android:layout_width="80dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/holo_blue_light"
     android:orientation="vertical"
@@ -9,11 +9,19 @@
     android:clipToPadding="false" >
 
     <TextView
+        android:id="@+id/tittle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:text="Room ***"/>
+
+    <TextView
         android:id="@+id/am_8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="8 AM - Aguero Matias"
-        android:textAlignment="center"
         android:textSize="10sp"/>
 
 
@@ -22,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="10 AM - FREE"
-        android:textAlignment="center"
         android:paddingTop="2dp"
         android:textSize="10sp"/>
 
@@ -31,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="11 AM - FREE"
-        android:textAlignment="center"
         android:paddingTop="2dp"
         android:textSize="10sp"/>
 
@@ -40,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="12 AM - Nicolas Bantar"
-        android:textAlignment="center"
         android:paddingTop="2dp"
         android:textSize="10sp"/>
 

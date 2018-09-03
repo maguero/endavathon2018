@@ -2,7 +2,6 @@ package com.hackaton.endava.calendar;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
