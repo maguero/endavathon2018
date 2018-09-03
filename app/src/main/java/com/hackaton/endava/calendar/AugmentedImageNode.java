@@ -10,7 +10,10 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.hackaton.endava.calendar.model.MeetingRoom;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AugmentedImageNode extends AnchorNode {
@@ -20,16 +23,19 @@ public class AugmentedImageNode extends AnchorNode {
     // The augmented image represented by this node.
     private AugmentedImage image;
 
-    private static CompletableFuture<ViewRenderable> calendarView;
+    private static Map<String, CompletableFuture<ViewRenderable>> viewMap =
+            new HashMap<String, CompletableFuture<ViewRenderable>>();
+    //private static CompletableFuture<ViewRenderable> calendarView;
 
 
     public AugmentedImageNode(Context context) {
         // Upon construction, start loading the models for the corners of the frame.
 
-        if (calendarView == null) {
-            calendarView = ViewRenderable.builder().setView(context, R.layout.calendar_view).build();
+        for (MeetingRoom room: MeetingRoomManager.Manager.meetingRooms.values()) {
+            if (viewMap.get(room.getFileName()) == null) {
+                viewMap.put(room.getFileName(), ViewRenderable.builder().setView(context, R.layout.calendar_view).build());
+            }
         }
-
     }
 
     /**
@@ -43,6 +49,7 @@ public class AugmentedImageNode extends AnchorNode {
         this.image = image;
 
         // If any of the models are not loaded, then recurse when all are loaded.
+        CompletableFuture<ViewRenderable> calendarView = viewMap.get(image.getName());
         if (!calendarView.isDone()) {
             CompletableFuture.allOf(calendarView)
                     .thenAccept((Void aVoid) -> setImage(image))
@@ -57,7 +64,7 @@ public class AugmentedImageNode extends AnchorNode {
         if (now != null) {
             LinearLayout layout = (LinearLayout) now.getView();
             TextView tittle = layout.findViewById(R.id.tittle);
-            tittle.setText(image.getName());
+            tittle.setText(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getName());
         }
 
         // Set the anchor based on the center of the image.

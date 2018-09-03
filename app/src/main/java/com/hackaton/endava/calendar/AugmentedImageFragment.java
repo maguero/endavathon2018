@@ -33,6 +33,7 @@ import com.google.ar.core.AugmentedImageDatabase;
 import com.google.ar.core.Config;
 import com.google.ar.core.Session;
 import com.google.ar.sceneform.ux.ArFragment;
+import com.hackaton.endava.calendar.model.MeetingRoom;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +47,6 @@ public class AugmentedImageFragment extends ArFragment {
   // This is the name of the image in the sample database.  A copy of the image is in the assets
   // directory.  Opening this image on your computer is a good quick way to test the augmented image
   // matching.
-  private static final String ROOM_PORTLAND = "QRPortland.png";
-  private static final String ROOM_SEATTLE = "QRSeattle.png";
 
   // This is a pre-created database containing the sample image.
   private static final String SAMPLE_IMAGE_DATABASE = "sample_database.imgdb";
@@ -121,16 +120,15 @@ public class AugmentedImageFragment extends ArFragment {
     // * shorter setup time
     // * doesn't require images to be packaged in apk.
     if (USE_SINGLE_IMAGE) {
-      Bitmap augmentedCeratiImageBitmap = loadAugmentedImageBitmap(assetManager, ROOM_PORTLAND);
-      Bitmap augmentedSpinettaImageBitmap = loadAugmentedImageBitmap(assetManager, ROOM_SEATTLE);
-      if ((augmentedCeratiImageBitmap == null) || (augmentedSpinettaImageBitmap == null)) {
-        return false;
-      }
 
       augmentedImageDatabase = new AugmentedImageDatabase(session);
-      augmentedImageDatabase.addImage(ROOM_SEATTLE, augmentedSpinettaImageBitmap);
-      augmentedImageDatabase.addImage(ROOM_PORTLAND, augmentedCeratiImageBitmap);
-
+      for (MeetingRoom room : MeetingRoomManager.Manager.meetingRooms.values()) {
+        Bitmap bitmap = loadAugmentedImageBitmap(assetManager, room.getFileName());
+        if (bitmap == null) {
+          return false;
+        }
+        augmentedImageDatabase.addImage(room.getFileName(), bitmap);
+      }
 
       // If the physical size of the image is known, you can instead use:
       //     augmentedImageDatabase.addImage("image_name", augmentedImageBitmap, widthInMeters);
