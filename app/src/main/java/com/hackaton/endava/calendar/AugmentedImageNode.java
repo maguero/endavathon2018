@@ -11,7 +11,7 @@ import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.hackaton.endava.calendar.connect.GraphServiceController;
-import com.hackaton.endava.calendar.connect.MeetingData;
+import com.hackaton.endava.calendar.model.MeetingData;
 import com.hackaton.endava.calendar.model.MeetingRoom;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
@@ -39,7 +39,7 @@ public class AugmentedImageNode extends AnchorNode {
     public AugmentedImageNode(Context context) {
         // Upon construction, start loading the models for the corners of the frame.
 
-        for (MeetingRoom room: MeetingRoomManager.Manager.meetingRooms.values()) {
+        for (MeetingRoom room : MeetingRoomManager.Manager.meetingRooms.values()) {
             if (viewMap.get(room.getFileName()) == null) {
                 viewMap.put(room.getFileName(), ViewRenderable.builder().setView(context, R.layout.calendar_view).build());
             }
@@ -75,7 +75,7 @@ public class AugmentedImageNode extends AnchorNode {
 
         // Make the 4 corner nodes.
         Vector3 localPosition = new Vector3();
-        localPosition.set(0.0f , 0.0f, 0.0f);
+        localPosition.set(0.0f, 0.0f, 0.0f);
 
         Node viewNode = new Node();
         viewNode.setParent(this);
