@@ -1,11 +1,11 @@
 package com.hackaton.endava.calendar;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
-
 import com.hackaton.endava.calendar.model.MeetingData;
 import com.hackaton.endava.calendar.model.MeetingRoom;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +81,32 @@ public class MeetingRoomManager {
                     .name(name)
                     .fileName(fileName)
                     .build();
+        }
+
+        public static TextView buildBusyCalendarTextView(View parent, String textValue) {
+            TextView busyCalendarTextView = new TextView(parent.getContext());
+
+            busyCalendarTextView.setWidth(parent.getWidth());
+            busyCalendarTextView.setHeight(40);
+            busyCalendarTextView.setText(textValue);
+            busyCalendarTextView.setTextSize(6);
+            busyCalendarTextView.setBackgroundColor(Color.parseColor("#de411b"));
+
+            return busyCalendarTextView;
+        }
+
+        @SuppressLint("SetTextI18n")
+        public static TextView buildEmptyCalendarTextView(View parent) {
+            TextView emptyCalendarTextView = new TextView(parent.getContext());
+
+            emptyCalendarTextView.setWidth(parent.getWidth());
+            emptyCalendarTextView.setHeight(40);
+            emptyCalendarTextView.setTextSize(6);
+            emptyCalendarTextView.setBackgroundColor(Color.parseColor("#64666d"));
+            emptyCalendarTextView.setText("FREE");
+            emptyCalendarTextView.setTextColor(Color.parseColor("#ffffff"));
+
+            return emptyCalendarTextView;
         }
 
     }

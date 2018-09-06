@@ -10,16 +10,24 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.hackaton.endava.calendar.connect.GraphServiceController;
 import com.hackaton.endava.calendar.model.MeetingData;
 import com.hackaton.endava.calendar.model.MeetingRoom;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.extensions.Event;
+import com.microsoft.graph.extensions.IEventCollectionPage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AugmentedImageNode extends AnchorNode {
 
     private static final String TAG = "AugmentedImageNode";
+    final private GraphServiceController mGraphServiceController = new GraphServiceController();
 
     // The augmented image represented by this node.
     private AugmentedImage image;
@@ -61,16 +69,6 @@ public class AugmentedImageNode extends AnchorNode {
         }
 
         ViewRenderable now = calendarView.getNow(null);
-        if (now != null) {
-            LinearLayout layout = (LinearLayout) now.getView();
-            layout.setMinimumWidth(40);
-            TextView tittle = layout.findViewById(R.id.tittle);
-            tittle.setText(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getName());
-
-            for (MeetingData data : MeetingRoomManager.Manager.getFakeData()) {
-                layout.addView(MeetingRoomManager.Manager.buildCalendarTextView(layout, data.getStart() + " - " + data.getEnd() + "(" + data.getOrganizer() + ")"));
-            }
-        }
 
         // Set the anchor based on the center of the image.
         setAnchor(image.createAnchor(image.getCenterPose()));
@@ -81,8 +79,54 @@ public class AugmentedImageNode extends AnchorNode {
 
         Node viewNode = new Node();
         viewNode.setParent(this);
-        viewNode.setLocalPosition(localPosition);
-        viewNode.setRenderable(now);
+
+        mGraphServiceController.getCalendarById(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getCalendarId(), new ICallback<IEventCollectionPage>() {
+                    @Override
+                    public void success(IEventCollectionPage iEventCollectionPage) {
+
+                        List<MeetingData> meetingDataList = new ArrayList<MeetingData>();
+                        List<Event> eventList = iEventCollectionPage.getCurrentPage();
+
+                        for (Event event : eventList) {
+
+                            MeetingData md = new MeetingData();
+                            md.setOrganizer(event.organizer.emailAddress.name);
+
+                            md.setStart(event.start.dateTime);
+                            md.setEnd(event.end.dateTime);
+
+                            meetingDataList.add(md);
+                        }
+
+
+                        // --- start drawing ---
+
+                        if (now != null) {
+                            LinearLayout layout = (LinearLayout) now.getView();
+                            TextView tittle = layout.findViewById(R.id.tittle);
+                            tittle.setText(MeetingRoomManager.Manager.meetingRooms.get(image.getName()).getName());
+
+                            for (MeetingData data : meetingDataList) {
+                                layout.addView(MeetingRoomManager.Manager.buildBusyCalendarTextView(layout, data.getStart() + " - " + data.getEnd() + " (" + data.getOrganizer() + ")"));
+                            }
+                        }
+
+                        // --- end drawing ---
+
+                        viewNode.setLocalPosition(localPosition);
+                        viewNode.setRenderable(now);
+
+
+                    }
+
+                    @Override
+                    public void failure(ClientException ex) {
+                        // TODO complete behaviour
+                    }
+
+                });
+
+
     }
 
     public AugmentedImage getImage() {

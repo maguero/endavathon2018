@@ -2,7 +2,7 @@
     android:id="@+id/calendar_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@android:color/holo_blue_light"
+    android:background="#de411b"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:orientation="vertical"
@@ -12,7 +12,7 @@
         android:id="@+id/tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
+        android:background="#de411b"
         android:text="Room ***"
         android:textAlignment="center"
         android:textColor="@android:color/white" />
